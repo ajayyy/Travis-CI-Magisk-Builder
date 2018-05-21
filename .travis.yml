@@ -20,6 +20,7 @@ env:
   global:
     - ANDROID_HOME=/usr/local/android-sdk
 script:
+  - export VERSION=$(sed '2!d' $TRAVIS_BUILD_DIR/config.prop)
   - cd "$ANDROID_HOME"
   - mkdir -p "ndk-bundle"
   - cd ndk-bundle
@@ -54,7 +55,7 @@ deploy:
   file_glob: true
   file: '$TRAVIS_BUILD_DIR/Magisk/out/*.{apk,zip}'
   overwrite: true
-  tag_name: $MAGISK_VER_STRING
+  tag_name: $VERSION
   on:
     repo: 0reo27/Travis-CI-Magisk-Builder
 notifications:
