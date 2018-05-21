@@ -1,0 +1,61 @@
+language: android
+dist: trusty
+jdk: oraclejdk8
+sudo: required
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-27.0.3
+    - android-27
+    - extra-android-m2repository
+    - addon-google_apis-google-24
+before_script:
+  - sleep 3; echo "y" | sdkmanager --update
+  - 'echo | sudo add-apt-repository ppa:deadsnakes/ppa'
+  - sudo apt-get update
+  - sudo apt-get upgrade
+  - sudo apt-get install -y python3.6
+env:
+  global:
+    - ANDROID_HOME=/usr/local/android-sdk
+script:
+  - cd "$ANDROID_HOME"
+  - mkdir -p "ndk-bundle"
+  - cd ndk-bundle
+  - >-
+    curl -L http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
+    -O
+  - chmod u+x android-ndk-r10e-linux-x86_64.bin
+  - ./android-ndk-r10e-linux-x86_64.bin > /dev/null
+  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r10e
+  - export LOCAL_ANDROID_NDK_HOME="$ANDROID_NDK_HOME"
+  - export LOCAL_ANDROID_NDK_HOST_PLATFORM="linux-x86_64"
+  - 'export PATH=$PATH:${ANDROID_NDK_HOME}'
+  - export ANDROID_NDK=$ANDROID_NDK_HOME
+  - env
+  - cd $TRAVIS_BUILD_DIR
+  - 'git clone --recurse-submodules https://github.com/topjohnwu/Magisk.git'
+  - cp config.prop $TRAVIS_BUILD_DIR/Magisk/
+  - cd $TRAVIS_BUILD_DIR/Magisk
+  - time python3.6 build.py all && echo "Magisk has been successfully built"
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR/Magisk/out
+  - 'ls *.{zip,apk}'
+branches:
+  only:
+    - master
+deploy:
+  provider: releases
+  api_key:
+    secure: >-
+      KmoHsTQm4v0zOW1ZkTHT9wVBQBlqO17UY0mH2NsfmJQvlLw1wtUyptGae+kfWtsNf8cFuJQgSBB6PErN0VcnggmT37ykTUoZRplv9iRFXmq7EKjh8gkv6CyAn+0voUh7Xfv37+kkJy96kvA2UwuftHitFPIG7Gjba6bMAmKgGL99Yh69LcdtGVfKOWTMg6rKtIZxM8IQRQuiLqh5U0Z+Y2ntEyUxRBScj9e6fPQ00i/TE5LqlsXyp+BRtV47jT8r+Q59Xb93OMMFAeWU5uzbV+fSZPg0pVP5qTKt/b2qgxIS6eM51c/n9hbeNs3rQnWtYLNL9vDfq5MYkJlLxsGSbx6cpBKT12rNJsxnCuYwP4hlsnaGVH4FdFpiQhLtoPNQFzRmCwh50FuVa+4Mgi1j+ramnZ3Odu95SWUz6WtHmew/0//W/TE9UGqbIt8WTmRdZTAHEM/+Cj/9g/kmCzlpr4p9RqmIvWthkIp1yN097oXJCGDzej/FQ8oG6VHpsjlj0NpxTGo/dVeNCms4ogoltCGWFxcaDFdIM752SZXWXLhiBhfbCtH6C0jb3QhcnbUNUNfSAjG25NBXJYn+Bc0WfCLw7O1eu3593PgK/OyPYV+oVGq2i8RdsTyrlvSVd6DZ66kYprWClNGQoDfajMF5NdEyjkNCnn/kCn6jaemZ/0I=
+  skip_cleanup: true
+  file_glob: true
+  file: '$TRAVIS_BUILD_DIR/Magisk/out/*.{apk,zip}'
+  overwrite: true
+  tag_name: $MAGISK_VER_STRING
+  on:
+    repo: 0reo27/Travis-CI-Magisk-Builder
+notifications:
+  email: false
