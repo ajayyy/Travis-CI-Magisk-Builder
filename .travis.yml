@@ -21,6 +21,7 @@ env:
     - ANDROID_HOME=/usr/local/android-sdk
 script:
   - export VERSION=$(sed '2!d' $TRAVIS_BUILD_DIR/config.prop)
+  - export VERSION=$(echo $VERSION | sed 's/version=//g')
   - cd "$ANDROID_HOME"
   - mkdir -p "ndk-bundle"
   - cd ndk-bundle

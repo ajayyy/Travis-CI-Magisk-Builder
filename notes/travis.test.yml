@@ -40,6 +40,7 @@ env:
 script:
     # Get the version from config.prop
     - export VERSION=$(sed '2!d' $TRAVIS_BUILD_DIR/config.prop)
+    - export VERSION=$(echo $VERSION | sed 's/version=//g')
     # Install the NDK and control its versioning.
     # https://github.com/travis-ci/travis-ci/issues/5395
     - cd "$ANDROID_HOME"
