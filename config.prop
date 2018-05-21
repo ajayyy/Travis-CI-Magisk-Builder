@@ -1,6 +1,6 @@
 # The version string and version code of Magisk
-version=1650
-versionCode=16.5-bcdadc6
+version=16.5-bcdadc6
+versionCode=1650
 
 outdir=out
 
