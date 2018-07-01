@@ -40,6 +40,7 @@ script:
   - 'git clone --recurse-submodules https://github.com/topjohnwu/Magisk.git'
   - cp config.prop $TRAVIS_BUILD_DIR/Magisk/
   - cd $TRAVIS_BUILD_DIR/Magisk
+  - git submodule update --remote app
   - python3.6 build.py -h
   - time python3.6 build.py all && echo "Magisk has been successfully built"
 before_deploy:
