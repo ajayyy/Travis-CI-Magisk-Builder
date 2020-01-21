@@ -34,7 +34,8 @@ script:
   - export ANDROID_NDK=$ANDROID_NDK_HOME
   - env
   - cd $TRAVIS_BUILD_DIR
-  - 'git clone --recurse-submodules https://github.com/topjohnwu/Magisk.git'
+  - 'git clone --recurse-submodules https://github.com/ajayyy/Magisk'
+  - 'git checkout core-mode'
   - cp config.prop $TRAVIS_BUILD_DIR/Magisk/
   - cd $TRAVIS_BUILD_DIR/Magisk
   - python3.6 build.py -h
@@ -62,6 +63,6 @@ deploy:
   overwrite: true
   tag_name: $VERSION
   on:
-    repo: 0reo27/Travis-CI-Magisk-Builder
+    repo: ajayyy/Travis-CI-Magisk-Builder
 notifications:
   email: false
