@@ -35,9 +35,9 @@ script:
   - env
   - cd $TRAVIS_BUILD_DIR
   - 'git clone --recurse-submodules https://github.com/ajayyy/Magisk'
-  - 'git checkout core-mode'
   - cp config.prop $TRAVIS_BUILD_DIR/Magisk/
   - cd $TRAVIS_BUILD_DIR/Magisk
+  - 'git checkout core-mode'
   - python3.6 build.py -h
   - time python3.6 build.py all && echo "Magisk has been successfully built"
   - cd $TRAVIS_BUILD_DIR/Magisk/out
