@@ -1,6 +1,10 @@
 # The version string and version code of Magisk
-version=16.5-c0ac2d5
-versionCode=1650
+version=20.29999
+versionCode=20299
+
+# The version name and version code of Magisk Manager
+appVersion=7.5.1
+appVersionCode=267
 
 outdir=out
 
@@ -10,6 +14,7 @@ prettyName=true
 
 # These pwds are passed to apksigner for release-key.jks. Necessary when building release apks
 # keyPass is the pwd for the specified keyAlias
+keyStore=release-key.jks
 keyStorePass=
 keyAlias=
 keyPass=
